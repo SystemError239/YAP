@@ -31,7 +31,7 @@ let rec countDigits (n: double) count =
 let addElements lst elements = lst @ elements
 let removeElement lst element = List.filter ((<>) element) lst
 let findElement lst element = lst |> List.mapi (fun i x -> if x = element then Some i else None) |> List.choose id
-let concatenateLists lst1 lst2 = lst1 @ lst2
+let list221 lst1 lst2 = lst1 @ lst2
 let getElementByIndex lst index =
     if index >= 0 && index < List.length lst then Some (List.item index lst) else None
 
@@ -74,7 +74,7 @@ let rec listMenu currentList =
             listMenu currentList
     | "4" ->
         match inputNumbers() with
-        | Some newList -> listMenu (concatenateLists currentList newList)
+        | Some newList -> listMenu (list221 currentList newList)
         | None -> listMenu currentList
     | "5" ->
         printf "Введите индекс: "
@@ -127,5 +127,5 @@ and main () =
         printfn "Ошибка: неверный выбор"
         main()
 
-
+// Запуск программы
 main()
