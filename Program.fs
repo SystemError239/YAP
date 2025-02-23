@@ -53,9 +53,12 @@ let rec listMenu currentList =
         | None -> listMenu currentList
     | "2" ->
         printf "Введите число для удаления: "
-        match System.Double.TryParse(Console.ReadLine()) with
-        | true, n -> listMenu (removeElement currentList n)
-        | _ ->
+        match inputNumbers() with
+        | Some [n] -> listMenu (removeElement currentList n)
+        | Some _ ->
+            printfn "Ошибка: необходимо ввести только одно число для удаления!"
+            listMenu currentList
+        | None ->
             printfn "Ошибка: некорректный ввод"
             listMenu currentList
     | "3" ->
@@ -70,7 +73,7 @@ let rec listMenu currentList =
             printfn "Ошибка: некорректный ввод"
             listMenu currentList
     | "4" ->
-        printf "Введите второй список чисел через пробел: "
+        //printf "Введите второй список чисел через пробел: "
         match inputNumbers() with
         | Some newList -> listMenu (concatenateLists currentList newList)
         | None -> listMenu currentList
@@ -91,7 +94,7 @@ let rec listMenu currentList =
         listMenu currentList
 
 // Главная функция
-let rec main () =
+and main () =
     printfn "Выберите задачу:"
     printfn "1 - Список противоположных чисел"
     printfn "2 - Количество цифр в числе"
@@ -105,7 +108,7 @@ let rec main () =
             main()
         | None -> main()
     | "2" ->
-        printf "Введите только одно натуральное число: \n"
+        printf "Введите натуральное число (только одно): "
         match inputNumbers() with
         | Some [n] when n > 0.0 && floor n = n ->
             printfn "Количество цифр: %d" (countDigits n 0)
@@ -126,4 +129,5 @@ let rec main () =
         printfn "Ошибка: неверный выбор"
         main()
 
+// Запуск программы
 main()
