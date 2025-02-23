@@ -30,7 +30,7 @@ let rec countDigits (n: double) count =
 // Основные операции над списками
 let addElements lst elements = lst @ elements
 let removeElement lst element = List.filter ((<>) element) lst
-let findElement lst element = List.tryFindIndex ((=) element) lst
+let findElement lst element = lst |> List.mapi (fun i x -> if x = element then Some i else None) |> List.choose id
 let concatenateLists lst1 lst2 = lst1 @ lst2
 let getElementByIndex lst index =
     if index >= 0 && index < List.length lst then Some (List.item index lst) else None
@@ -63,17 +63,16 @@ let rec listMenu currentList =
             listMenu currentList
     | "3" ->
         printf "Введите число для поиска: "
-        match System.Double.TryParse(Console.ReadLine()) with
+        match System.Double.TryParse(Console.ReadLine(),NumberStyles.Float, CultureInfo.InvariantCulture) with
         | true, n ->
-            match findElement currentList n with
-            | Some idx -> printfn "Число найдено на позиции %d" idx
-            | None -> printfn "Число не найдено"
+            let indexes = findElement currentList n
+            if indexes.Length > 0 then printfn "Число найдено на позициях %A" indexes
+            else printfn "Число не найдено"
             listMenu currentList
         | _ ->
             printfn "Ошибка: некорректный ввод"
             listMenu currentList
     | "4" ->
-        //printf "Введите второй список чисел через пробел: "
         match inputNumbers() with
         | Some newList -> listMenu (concatenateLists currentList newList)
         | None -> listMenu currentList
@@ -108,7 +107,6 @@ and main () =
             main()
         | None -> main()
     | "2" ->
-        printf "Введите натуральное число (только одно): "
         match inputNumbers() with
         | Some [n] when n > 0.0 && floor n = n ->
             printfn "Количество цифр: %d" (countDigits n 0)
@@ -129,5 +127,5 @@ and main () =
         printfn "Ошибка: неверный выбор"
         main()
 
-// Запуск программы
+
 main()
