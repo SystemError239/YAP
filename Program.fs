@@ -1,4 +1,4 @@
-﻿open System
+open System
 open System.Globalization
 
 // Функция для ввода чисел (натуральных и вещественных)
@@ -7,12 +7,12 @@ let rec inputNumbers () =
     let input = Console.ReadLine()
     if input.Trim().ToLower() = "exit" then None
     else
-        // Разделяем введенную строку на отдельные элементы и пытаемся перевести их в числа
+        // Разделяем введенную строку на отдельные элементы и пытаемся распарсить их в числа
         let parsedNumbers =
             input.Split([|' '|], StringSplitOptions.RemoveEmptyEntries)
             |> Array.choose (fun s -> 
                 match Double.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture) with
-                | true, n -> Some n  // Если успешенo, добавляем в список
+                | true, n -> Some n  // Если парсинг успешен, добавляем число в список
                 | _ -> None)          // Если нет, игнорируем ввод
         
         if parsedNumbers.Length > 0 then Some (parsedNumbers |> Array.toList) // Если есть числа, возвращаем список
@@ -21,18 +21,21 @@ let rec inputNumbers () =
             inputNumbers()
 
 // Функция нахождения противоположных чисел
-let oppositeNumbers numbers = numbers |> List.map (fun x -> (-1.0)*x)
+let oppositeNumbers numbers = numbers |> List.map (fun x -> -x)
 
-// Подсчет цифр в натуральном числе
+// Рекурсивная функция подсчета цифр в натуральном числе
 let rec countDigits (n: double) count =
+    // Если число меньше 10, то базовый случай, возвращаем количество цифр
     if n < 10.0 then count + 1
-    else countDigits (n / 10.0) (count + 1)
+    else 
+        // Делим число на 10 и увеличиваем счетчик цифр
+        countDigits (n / 10.0) (count + 1)
 
 // Основные операции над списками
 let addElements lst elements = lst @ elements // Добавление элементов в список
 let removeElement lst element = List.filter ((<>) element) lst // Удаление элемента из списка
 let findElement lst element = List.tryFindIndex ((=) element) lst // Поиск индекса элемента
-let List221 lst1 lst2 = lst1 @ lst2 // Слияние двух списков
+let concatenateLists lst1 lst2 = lst1 @ lst2 // Слияние двух списков
 let getElementByIndex lst index =
     if index >= 0 && index < List.length lst then Some (List.item index lst) else None // Получение элемента по индексу
 
@@ -76,7 +79,7 @@ let rec listMenu currentList =
         printf "Введите второй список чисел через пробел: "
         match inputNumbers() with
         | Some newList ->
-            listMenu (List221 currentList newList)
+            listMenu (concatenateLists currentList newList)
         | None -> listMenu currentList
     | "5" -> // Получение элемента по индексу
         printf "Введите индекс: "
@@ -110,14 +113,15 @@ and main () =
         | None -> main()
     | "2" -> // Подсчет цифр в натуральном числе
         printf "Введите натуральное число: "
-        match System.Double.TryParse(Console.ReadLine()) with
-        | true, n when n > 0.0 && floor n = n ->
+        match inputNumbers() with
+        | Some [n] when n > 0.0 && floor n = n -> // Проверяем, что введено ровно одно число
             printfn "Количество цифр: %d" (countDigits n 0)
             main()
         | _ ->
-            printfn "Ошибка: введите натуральное число!"
+            printfn "Ошибка: введите ровно одно натуральное число!"
             main()
     | "3" -> // Переход к операциям над списками
+        printf("Для работы со списком надо ввести его стартовые значения \n" )
         match inputNumbers() with
         | Some initialList -> listMenu initialList
         | None -> main()
