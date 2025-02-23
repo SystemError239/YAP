@@ -7,17 +7,16 @@ let rec inputNumbers () =
     let input = Console.ReadLine()
     if input.Trim().ToLower() = "exit" then None
     else
-        // Разделяем введенную строку на отдельные элементы и пытаемся распарсить их в числа
         let parsedNumbers =
             input.Split([|' '|], StringSplitOptions.RemoveEmptyEntries)
             |> Array.choose (fun s -> 
                 match Double.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture) with
-                | true, n -> Some n  // Если парсинг успешен, добавляем число в список
-                | _ -> None)          // Если нет, игнорируем ввод
+                | true, n -> Some n
+                | _ -> None)
         
-        if parsedNumbers.Length > 0 then Some (parsedNumbers |> Array.toList) // Если есть числа, возвращаем список
+        if parsedNumbers.Length > 0 then Some (parsedNumbers |> Array.toList)
         else
-            printfn "Ошибка: введите хотя бы одно число!" // Ошибка при пустом вводе
+            printfn "Ошибка: введите хотя бы одно число!"
             inputNumbers()
 
 // Функция нахождения противоположных чисел
@@ -25,19 +24,16 @@ let oppositeNumbers numbers = numbers |> List.map (fun x -> -x)
 
 // Рекурсивная функция подсчета цифр в натуральном числе
 let rec countDigits (n: double) count =
-    // Если число меньше 10, то базовый случай, возвращаем количество цифр
     if n < 10.0 then count + 1
-    else 
-        // Делим число на 10 и увеличиваем счетчик цифр
-        countDigits (n / 10.0) (count + 1)
+    else countDigits (n / 10.0) (count + 1)
 
 // Основные операции над списками
-let addElements lst elements = lst @ elements // Добавление элементов в список
-let removeElement lst element = List.filter ((<>) element) lst // Удаление элемента из списка
-let findElement lst element = List.tryFindIndex ((=) element) lst // Поиск индекса элемента
-let concatenateLists lst1 lst2 = lst1 @ lst2 // Слияние двух списков
+let addElements lst elements = lst @ elements
+let removeElement lst element = List.filter ((<>) element) lst
+let findElement lst element = List.tryFindIndex ((=) element) lst
+let concatenateLists lst1 lst2 = lst1 @ lst2
 let getElementByIndex lst index =
-    if index >= 0 && index < List.length lst then Some (List.item index lst) else None // Получение элемента по индексу
+    if index >= 0 && index < List.length lst then Some (List.item index lst) else None
 
 // Функция для работы со списком
 let rec listMenu currentList =
@@ -51,20 +47,18 @@ let rec listMenu currentList =
     printfn "0 - Назад в главное меню"
     
     match Console.ReadLine() with
-    | "1" -> // Добавление новых элементов в список
+    | "1" ->
         match inputNumbers() with
-        | Some newElements ->
-            listMenu (addElements currentList newElements)
+        | Some newElements -> listMenu (addElements currentList newElements)
         | None -> listMenu currentList
-    | "2" -> // Удаление элемента из списка
+    | "2" ->
         printf "Введите число для удаления: "
         match System.Double.TryParse(Console.ReadLine()) with
-        | true, n ->
-            listMenu (removeElement currentList n)
+        | true, n -> listMenu (removeElement currentList n)
         | _ ->
             printfn "Ошибка: некорректный ввод"
             listMenu currentList
-    | "3" -> // Поиск элемента в списке
+    | "3" ->
         printf "Введите число для поиска: "
         match System.Double.TryParse(Console.ReadLine()) with
         | true, n ->
@@ -75,13 +69,12 @@ let rec listMenu currentList =
         | _ ->
             printfn "Ошибка: некорректный ввод"
             listMenu currentList
-    | "4" -> // Слияние списка с другим
+    | "4" ->
         printf "Введите второй список чисел через пробел: "
         match inputNumbers() with
-        | Some newList ->
-            listMenu (concatenateLists currentList newList)
+        | Some newList -> listMenu (concatenateLists currentList newList)
         | None -> listMenu currentList
-    | "5" -> // Получение элемента по индексу
+    | "5" ->
         printf "Введите индекс: "
         match System.Int32.TryParse(Console.ReadLine()) with
         | true, i ->
@@ -92,40 +85,43 @@ let rec listMenu currentList =
         | _ ->
             printfn "Ошибка: некорректный ввод"
             listMenu currentList
-    | "0" -> main() // Возвращение в главное меню
+    | "0" -> main()
     | _ ->
         printfn "Ошибка: неверный выбор"
         listMenu currentList
 
 // Главная функция
-and main () =
+let rec main () =
     printfn "Выберите задачу:"
     printfn "1 - Список противоположных чисел"
     printfn "2 - Количество цифр в числе"
     printfn "3 - Операции над списками"
     printfn "0 - Выход"
     match Console.ReadLine() with
-    | "1" -> // Получение списка противоположных чисел
+    | "1" ->
         match inputNumbers() with
         | Some numbers ->
             printfn "Противоположные числа: %A" (oppositeNumbers numbers)
             main()
         | None -> main()
-    | "2" -> // Подсчет цифр в натуральном числе
-        printf "Введите натуральное число: "
+    | "2" ->
+        printf "Введите только одно натуральное число: \n"
         match inputNumbers() with
-        | Some [n] when n > 0.0 && floor n = n -> // Проверяем, что введено ровно одно число
+        | Some [n] when n > 0.0 && floor n = n ->
             printfn "Количество цифр: %d" (countDigits n 0)
             main()
-        | _ ->
-            printfn "Ошибка: введите ровно одно натуральное число!"
+        | Some _ ->
+            printfn "Ошибка: введите только одно натуральное число!"
             main()
-    | "3" -> // Переход к операциям над списками
-        printf("Для работы со списком надо ввести его стартовые значения \n" )
+        | None ->
+            printfn "Ошибка: некорректный ввод!"
+            main()
+    | "3" ->
+        printf "Для работы со списком надо ввести его стартовые значения\n"
         match inputNumbers() with
         | Some initialList -> listMenu initialList
         | None -> main()
-    | "0" -> printfn "Выход" // Выход из программы
+    | "0" -> printfn "Выход"
     | _ ->
         printfn "Ошибка: неверный выбор"
         main()
