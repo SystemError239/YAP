@@ -1,7 +1,7 @@
 open System
 
 //ввод натуральных чисел с проверкой
-let rec inputNaturalNumbers () =
+let rec InputNatural () =
     printf "Введите натуральные числа через пробел (или 'exit' для выхода): "
     let input = Console.ReadLine().Trim()
     if input.ToLower() = "exit" then None
@@ -10,7 +10,7 @@ let rec inputNaturalNumbers () =
                                |> Array.exists (fun s -> match System.Int32.TryParse(s) with | true, n when n > 0 -> false | _ -> true)
         if invalidInput then
             printfn "Ошибка: ввод должен содержать только натуральные числа! Попробуйте снова."
-            inputNaturalNumbers()
+            InputNatural()
         else
             let parsedNumbers =
                 input.Split([| ' '; '\t' |], StringSplitOptions.RemoveEmptyEntries)
@@ -19,10 +19,10 @@ let rec inputNaturalNumbers () =
 
 //генерация случайного списка натуральных чисел
 let random = System.Random()
-let createRandomNumberList (size: int) = List.init size (fun _ -> random.Next(1, 100))
+let RandList (size: int) = List.init size (fun _ -> random.Next(1, 100))
 
 //список максимальных цифр
-let getMaxDigitsList (numbers: int list) =
+let MaxDigitsList (numbers: int list) =
     let rec findMaxDigit n maxDigit =
         if n = 0 then maxDigit
         else
@@ -34,10 +34,10 @@ let getMaxDigitsList (numbers: int list) =
 
 
 //подсчет суммарной длины строк
-let getTotalStringLength (strings: string list) =
+let StrLenght (strings: string list) =
     strings |> List.fold (fun acc s -> acc + s.Length) 0
 
-//меню задачи 1
+
 let rec taskMenu () =
     printfn "Выберите способ ввода списка:"
     printfn "1 - Ручной ввод"
@@ -45,9 +45,9 @@ let rec taskMenu () =
     printfn "0 - Назад в главное меню"
     match Console.ReadLine() with
     | "1" ->
-        match inputNaturalNumbers() with
+        match InputNatural() with
         | Some numbers ->
-            let maxDigits = getMaxDigitsList numbers
+            let maxDigits = MaxDigitsList numbers
             printfn "Список максимальных цифр: %A" maxDigits
             taskMenu()
         | None -> main()
@@ -59,8 +59,8 @@ let rec taskMenu () =
             else
                 match System.Int32.TryParse(input) with
                 | true, size when size > 0 ->
-                    let randomList = createRandomNumberList size
-                    let maxDigits = getMaxDigitsList randomList
+                    let randomList = RandList size
+                    let maxDigits = MaxDigitsList randomList
                     printfn "Сгенерированный список: %A" randomList
                     printfn "Список максимальных цифр: %A" maxDigits
                     taskMenu()
@@ -73,7 +73,6 @@ let rec taskMenu () =
         printfn "Ошибка: неверный выбор"
         taskMenu()
 
-//главное меню
 and main () =
     printfn "Главное меню:"
     printfn "1 - Задача 1: Найти максимальные цифры"
@@ -88,7 +87,7 @@ and main () =
             if input.ToLower() = "exit" then main()
             else
                 let strings = input.Split([| ' '; '\t' |], StringSplitOptions.RemoveEmptyEntries) |> Array.toList
-                let totalLength = getTotalStringLength strings
+                let totalLength = StrLenght strings
                 printfn "Суммарная длина строк: %d" totalLength
                 main()
         inputStrings()
