@@ -16,7 +16,7 @@ let rec inputNaturalNumbers () =
                 input.Split([| ' '; '\t' |], StringSplitOptions.RemoveEmptyEntries)
                 |> Array.choose (fun s -> match System.Int32.TryParse(s) with | true, n -> Some n | _ -> None)
             Some (parsedNumbers |> Array.toList)
-
+let random = System.Random()
 //генерация случайного списка строк
 let createRandomStringList (size: int) =
     let chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
@@ -26,7 +26,7 @@ let createRandomStringList (size: int) =
     List.init size (fun _ -> randomString())
 
 //генерация случайного списка натуральных чисел
-let random = System.Random()
+
 let createRandomNumberList (size: int) = List.init size (fun _ -> random.Next(1, 100))
 
 //получение списка максимальных цифр
