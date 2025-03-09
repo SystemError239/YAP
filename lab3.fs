@@ -1,6 +1,7 @@
-﻿open System
+open System
 open System.IO
-//ввод натуральных чисел
+
+// ввод натуральных чисел
 let rec inputNaturalNumbers count collected =
     if count = 0 then
         Some collected
@@ -15,18 +16,20 @@ let rec inputNaturalNumbers count collected =
                 printfn "Ошибка: введите положительное целое число!"
                 inputNaturalNumbers count collected
 
-//чтение чисел из файла
-let readNumbersFromFile (path: string) =
-    seq {
-        use reader = new System.IO.StreamReader(path)
-        while not reader.EndOfStream do
-            let line = reader.ReadLine().Trim()
-            match System.Int32.TryParse(line) with
-            | true, n when n > 0 -> yield n
-            | _ -> printfn "Пропуск некорректной строки: %s" line
-    }
+// ленивое чтение чисел из файла
+let readNumbersFromFileLazy (path: string) =
+    lazy (
+        seq {
+            use reader = new StreamReader(path : string)
+            while not reader.EndOfStream do
+                let line = reader.ReadLine().Trim()
+                match System.Int32.TryParse(line) with
+                | true, n when n > 0 -> yield n
+                | _ -> printfn "Пропуск некорректной строки: %s" line
+        } |> Seq.cache
+    )
 
-//получение списка максимальных цифр
+// получение последовательности максимальных цифр 
 let getMaxDigitsList (numbers: seq<int>) =
     let rec findMaxDigit n maxDigit =
         if n = 0 then maxDigit
@@ -34,21 +37,35 @@ let getMaxDigitsList (numbers: seq<int>) =
             let digit = n % 10
             let newMax = if digit > maxDigit then digit else maxDigit
             findMaxDigit (n / 10) newMax
+    
     numbers |> Seq.map (fun n -> findMaxDigit n 0)
 
-//подсчет суммарной длины строк
+// подсчет суммарной длины строк
 let getTotalStringLength (strings: seq<string>) =
     strings |> Seq.fold (fun acc s -> acc + s.Length) 0
 
-//чтение строк из файла
-let readStringsFromFile (path: string) =
-    seq {
-        use reader = new System.IO.StreamReader(path)
-        while not reader.EndOfStream do
-            yield reader.ReadLine()
-    }
+// ленивое чтение строк из файла
+let readStringsFromFileLazy (path: string) =
+    lazy (
+        seq {
+            use reader = new StreamReader(path : string)
+            while not reader.EndOfStream do
+                yield reader.ReadLine()
+        }
+    )
 
-//чтение файлов в каталоге и поиск первого по алфавиту
+// ленивый ввод строк с клавиатуры
+let readStringsFromConsoleLazy count =
+    lazy (
+        seq {
+            for i in 1 .. count do
+                printf "Введите строку или 'exit' для выхода: "
+                let input = Console.ReadLine().Trim()
+                if input.ToLower() = "exit" then yield! Seq.empty else yield input
+        }
+    )
+
+// чтение файлов в каталоге и поиск первого по алфавиту
 let findFirstFileAlphabetically (directoryPath: string) =
     try
         Directory.GetFiles(directoryPath)
@@ -62,9 +79,10 @@ let findFirstFileAlphabetically (directoryPath: string) =
     | ex ->
         printfn "Ошибка: %s" ex.Message
         None
-//задача 1
+
+// задача 1
 let rec task1Menu () =
-    printfn "Выберите способ ввода списка:"
+    printfn "Выберите способ ввода последовательности:"
     printfn "1 - Ручной ввод"
     printfn "2 - Ввод из файла"
     printfn "0 - Назад в главное меню"
@@ -83,9 +101,9 @@ let rec task1Menu () =
             printfn "Ошибка: введите положительное целое число!"
             task1Menu()
     | "2" ->
-        let path = "numbers.txt" //путь к файлу
-        let numbers = readNumbersFromFile path
-        let maxDigits = getMaxDigitsList numbers
+        let path = "numbers.txt" // путь к файлу
+        let numbers = readNumbersFromFileLazy path
+        let maxDigits = getMaxDigitsList numbers.Value
         printfn "Список максимальных цифр из файла: %A" (Seq.toList maxDigits)
         task1Menu()
     | "0" -> main()
@@ -93,7 +111,7 @@ let rec task1Menu () =
         printfn "Ошибка: неверный выбор"
         task1Menu()
 
-//задача 2
+// задача 2
 and task2Menu () =
     printfn "Выберите способ ввода строк:"
     printfn "1 - Ручной ввод"
@@ -104,24 +122,17 @@ and task2Menu () =
         printf "Введите количество строк: "
         match System.Int32.TryParse(Console.ReadLine()) with
         | true, count when count > 0 ->
-            let rec manualStringInput count collected =
-                if count = 0 then collected
-                else
-                    printf "Введите строку или 'exit' для выхода: "
-                    let input = Console.ReadLine()
-                    if input.ToLower().Trim() = "exit" then Seq.empty
-                    else manualStringInput (count - 1) (Seq.append collected (seq { yield input }))
-            let strings = manualStringInput count Seq.empty
-            let totalLength = getTotalStringLength strings
+            let strings = readStringsFromConsoleLazy count
+            let totalLength = getTotalStringLength strings.Value
             printfn "Суммарная длина строк: %d" totalLength
             task2Menu()
         | _ ->
             printfn "Ошибка: введите положительное целое число!"
             task2Menu()
     | "2" ->
-        let path = "strings.txt" //путь к файлу
-        let strings = readStringsFromFile path
-        let totalLength = getTotalStringLength strings
+        let path = "strings.txt" // путь к файлу
+        let strings = readStringsFromFileLazy path
+        let totalLength = getTotalStringLength strings.Value
         printfn "Суммарная длина строк из файла: %d" totalLength
         task2Menu()
     | "0" -> main()
@@ -129,15 +140,15 @@ and task2Menu () =
         printfn "Ошибка: неверный выбор"
         task2Menu()
 
-//задача 3
+// задача 3
 and task3Menu () =
-    let directoryPath = "C:/Users/Тамара/Desktop/Test" //путь к файлу
+    let directoryPath = "D:/Test" // путь к каталогу
     match findFirstFileAlphabetically directoryPath with
     | Some file -> printfn "Первый по алфавиту файл: %s" (Path.GetFileName(file))
     | None -> printfn "Файл не найден или произошла ошибка."
     main()
 
-//главное меню
+// главное меню
 and main () =
     printfn "Главное меню:"
     printfn "1 - Задача 1: Найти максимальные цифры"
