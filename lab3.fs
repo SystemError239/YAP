@@ -44,7 +44,7 @@ let getMaxDigitsList (numbers: seq<int>) =
 let getTotalStringLength (strings: seq<string>) =
     strings |> Seq.fold (fun acc s -> acc + s.Length) 0
 
-//чтение строк из файла
+// чтение строк из файла
 let readStringsFromFileLazy (path: string) =
     lazy (
         seq {
@@ -54,7 +54,7 @@ let readStringsFromFileLazy (path: string) =
         }
     )
 
-// ввод строк с клавиатуры
+//ввод строк с клавиатуры
 let readStringsFromConsoleLazy count =
     lazy (
         seq {
@@ -66,7 +66,7 @@ let readStringsFromConsoleLazy count =
     )
 
 // чтение файлов в каталоге и поиск первого по алфавиту
-let findFirstFileAlphabetically (directoryPath: string) =
+let AlphaSearch (directoryPath: string) =
     try
         Directory.GetFiles(directoryPath)
         |> Seq.ofArray
@@ -145,7 +145,7 @@ and task2Menu () =
 and task3Menu () =
     printf "Введите путь к каталогу: "
     let directoryPath = Console.ReadLine().Trim()
-    match findFirstFileAlphabetically directoryPath with
+    match AlphaSearch directoryPath with
     | Some file -> printfn "Первый по алфавиту файл: %s" (Path.GetFileName(file))
     | None -> printfn "Файл не найден или произошла ошибка."
     main()
