@@ -29,7 +29,7 @@ let readNumbersFromFileLazy (path: string) =
         } |> Seq.cache
     )
 
-// получение последовательности максимальных цифр 
+// получение списка максимальных цифр с ленивыми вычислениями
 let getMaxDigitsList (numbers: seq<int>) =
     let rec findMaxDigit n maxDigit =
         if n = 0 then maxDigit
@@ -70,7 +70,8 @@ let findFirstFileAlphabetically (directoryPath: string) =
     try
         Directory.GetFiles(directoryPath)
         |> Seq.ofArray
-        |> Seq.sort
+        |> Seq.map Path.GetFileName
+        |> Seq.sortBy (fun file -> file.ToLower())
         |> Seq.tryHead
     with
     | :? DirectoryNotFoundException ->
@@ -82,7 +83,7 @@ let findFirstFileAlphabetically (directoryPath: string) =
 
 // задача 1
 let rec task1Menu () =
-    printfn "Выберите способ ввода последовательности:"
+    printfn "Выберите способ ввода списка:"
     printfn "1 - Ручной ввод"
     printfn "2 - Ввод из файла"
     printfn "0 - Назад в главное меню"
@@ -142,7 +143,8 @@ and task2Menu () =
 
 // задача 3
 and task3Menu () =
-    let directoryPath = "D:/Test" // путь к каталогу
+    printf "Введите путь к каталогу: "
+    let directoryPath = Console.ReadLine().Trim()
     match findFirstFileAlphabetically directoryPath with
     | Some file -> printfn "Первый по алфавиту файл: %s" (Path.GetFileName(file))
     | None -> printfn "Файл не найден или произошла ошибка."
