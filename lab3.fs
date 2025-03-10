@@ -16,7 +16,7 @@ let rec inputNaturalNumbers count collected =
                 printfn "Ошибка: введите положительное целое число!"
                 inputNaturalNumbers count collected
 
-// ленивое чтение чисел из файла
+// чтение чисел из файла
 let readNumbersFromFileLazy (path: string) =
     lazy (
         seq {
@@ -29,7 +29,7 @@ let readNumbersFromFileLazy (path: string) =
         } |> Seq.cache
     )
 
-// получение списка максимальных цифр с ленивыми вычислениями
+// получение списка максимальных цифр
 let getMaxDigitsList (numbers: seq<int>) =
     let rec findMaxDigit n maxDigit =
         if n = 0 then maxDigit
@@ -44,7 +44,7 @@ let getMaxDigitsList (numbers: seq<int>) =
 let getTotalStringLength (strings: seq<string>) =
     strings |> Seq.fold (fun acc s -> acc + s.Length) 0
 
-// ленивое чтение строк из файла
+//чтение строк из файла
 let readStringsFromFileLazy (path: string) =
     lazy (
         seq {
@@ -54,7 +54,7 @@ let readStringsFromFileLazy (path: string) =
         }
     )
 
-// ленивый ввод строк с клавиатуры
+// ввод строк с клавиатуры
 let readStringsFromConsoleLazy count =
     lazy (
         seq {
