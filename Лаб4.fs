@@ -1,9 +1,10 @@
-﻿open System
+open System
 
 type Tree =
     | Node of string * Tree * Tree
     | Empty
 
+//Вставка в дерево
 let rec insert value tree =
     match tree with
     | Empty -> Node(value, Empty, Empty)
@@ -12,13 +13,13 @@ let rec insert value tree =
         elif value > ZOV then Node(ZOV, left, insert value right)
         else tree
 
+//Ввод дерева
 let rec inputTree tree =
-
     printf "Введите строку (или 'exit' для завершения): "
     match Console.ReadLine() with
     | "exit" -> tree
     | input -> inputTree(insert input tree)
-
+//Рандомное заполнение дерева
 let randomTree size =
     let randomString() =
         let chars = "abcdefghijklmnopqrstuvwxyz123456789"
@@ -28,32 +29,33 @@ let randomTree size =
         if n = 0 then tree
         else generate (n - 1) (insert (randomString()) tree)
     generate size Empty
-
+//Вывод дерева
 let printTree tree =
-    let rec printTreeHelper tree depth =
+    let rec printTreeOtstup tree otstup =
         match tree with
         | Empty -> ()
         | Node(value, left, right) ->
-            printTreeHelper right (depth + 4)
-            printfn "%s%s" (String.replicate depth " ") value
-            printTreeHelper left (depth + 4)
-    printTreeHelper tree 0
+            printTreeOtstup right (otstup + 4)
+            printfn "%s%s" (String.replicate otstup " ") value
+            printTreeOtstup left (otstup + 4)
+    printTreeOtstup tree 0
 
 //Задание 1
-let rec mapTree tree =
+let rec Task1 tree =
     let shiftChar c = char (int c + 1)
     let shiftString s = String.map shiftChar s
     match tree with
     | Empty -> Empty
-    | Node(value, left, right) -> Node(shiftString value, mapTree left, mapTree right)
+    | Node(value, left, right) -> Node(shiftString value, Task1 left, Task1 right)
 
-let rec foldTree tree acc =
+//Задание 2
+let rec Task2 tree acc =
     match tree with
     | Empty -> acc
     | Node(_, Empty, Empty) -> acc
     | Node(value, left, right) ->
-        let acc = foldTree left acc
-        let acc = foldTree right acc
+        let acc = Task2 left acc
+        let acc = Task2 right acc
         match left, right with
         | Node(_, Empty, Empty), Node(_, Empty, Empty) -> value :: acc
         | _ -> acc
@@ -95,7 +97,7 @@ and mainMenu() =
         | Some tree ->
             printfn "\nИсходное дерево:"
             printTree tree 
-            let mappedTree = mapTree tree
+            let mappedTree = Task1 tree
             printfn "\nПосле преобразования:"
             printTree mappedTree 
         | None -> ()
@@ -105,7 +107,7 @@ and mainMenu() =
         | Some tree ->
             printfn "\nИсходное дерево:"
             printTree tree 
-            let nodes = foldTree tree []
+            let nodes = Task2 tree []
             printfn "\nУзлы с двумя листьями: %A" nodes
         | None -> ()
         mainMenu()
