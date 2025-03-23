@@ -1,27 +1,27 @@
 :- initialization(main).
 
 main :-
-    write('Введите первое множество (список без повторов): '),
+    write('Р’РІРµРґРёС‚Рµ РїРµСЂРІРѕРµ РјРЅРѕР¶РµСЃС‚РІРѕ (СЃРїРёСЃРѕРє Р±РµР· РїРѕРІС‚РѕСЂРѕРІ): '),
     read(Set1),
-    write('Введите второе множество (список без повторов): '),
+    write('Р’РІРµРґРёС‚Рµ РІС‚РѕСЂРѕРµ РјРЅРѕР¶РµСЃС‚РІРѕ (СЃРїРёСЃРѕРє Р±РµР· РїРѕРІС‚РѕСЂРѕРІ): '),
     read(Set2),
     de_morgan_union(Set1, Set2, Result1, Result2),
-    write('Результат (левая часть): '), write(Result1), nl,
-    write('Результат (правая часть): '), write(Result2), nl,
-    (Result1 == Result2 -> write('Закон де Моргана подтверждён.') ; write('Ошибка! Закон не подтверждён.')), nl,
+    write('Р РµР·СѓР»СЊС‚Р°С‚ (Р»РµРІР°СЏ С‡Р°СЃС‚СЊ): '), write(Result1), nl,
+    write('Р РµР·СѓР»СЊС‚Р°С‚ (РїСЂР°РІР°СЏ С‡Р°СЃС‚СЊ): '), write(Result2), nl,
+    (Result1 == Result2 -> write('Р—Р°РєРѕРЅ РґРµ РњРѕСЂРіР°РЅР° РїРѕРґС‚РІРµСЂР¶РґС‘РЅ.') ; write('РћС€РёР±РєР°! Р—Р°РєРѕРЅ РЅРµ РїРѕРґС‚РІРµСЂР¶РґС‘РЅ.')), nl,
     main.
-%нахождение дополнения множества относительно универсального множества
+%РЅР°С…РѕР¶РґРµРЅРёРµ РґРѕРїРѕР»РЅРµРЅРёСЏ РјРЅРѕР¶РµСЃС‚РІР° РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅРѕ СѓРЅРёРІРµСЂСЃР°Р»СЊРЅРѕРіРѕ РјРЅРѕР¶РµСЃС‚РІР°
 complement(Universe, Set, Complement) :-
     findall(X, (member(X, Universe), \+ member(X, Set)), Complement).
 
-%объединение множеств
+%РѕР±СЉРµРґРёРЅРµРЅРёРµ РјРЅРѕР¶РµСЃС‚РІ
 union([], Set, Set).
 union([H|T], Set, Union) :-
     member(H, Set), !, union(T, Set, Union).
 union([H|T], Set, [H|Union]) :-
     union(T, Set, Union).
 
-% пересечение множеств
+% РїРµСЂРµСЃРµС‡РµРЅРёРµ РјРЅРѕР¶РµСЃС‚РІ
 intersection([], _, []).
 intersection([H|T], Set, [H|Intersection]) :-
     member(H, Set), !, intersection(T, Set, Intersection).
@@ -29,9 +29,9 @@ intersection([_|T], Set, Intersection) :-
     intersection(T, Set, Intersection).
 
 de_morgan_union(Set1, Set2, Left, Right) :-
-    Universe = [0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f], %универсальное множество
-    union(Set1, Set2, UnionSet),%объединение в левой части
-    complement(Universe, UnionSet, Left),%дополнение в левой части
-    complement(Universe, Set1, Comp1),%дополнение первого множества
-    complement(Universe, Set2, Comp2),%дополнение второго множества
-    intersection(Comp1, Comp2, Right).%пересечение множеств
+    Universe = [0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f], %СѓРЅРёРІРµСЂСЃР°Р»СЊРЅРѕРµ РјРЅРѕР¶РµСЃС‚РІРѕ
+    union(Set1, Set2, UnionSet),%РѕР±СЉРµРґРёРЅРµРЅРёРµ РІ Р»РµРІРѕР№ С‡Р°СЃС‚Рё
+    complement(Universe, UnionSet, Left),%РґРѕРїРѕР»РЅРµРЅРёРµ РІ Р»РµРІРѕР№ С‡Р°СЃС‚Рё
+    complement(Universe, Set1, Comp1),%РґРѕРїРѕР»РЅРµРЅРёРµ РїРµСЂРІРѕРіРѕ РјРЅРѕР¶РµСЃС‚РІР°
+    complement(Universe, Set2, Comp2),%РґРѕРїРѕР»РЅРµРЅРёРµ РІС‚РѕСЂРѕРіРѕ РјРЅРѕР¶РµСЃС‚РІР°
+    intersection(Comp1, Comp2, Right).%РїРµСЂРµСЃРµС‡РµРЅРёРµ РјРЅРѕР¶РµСЃС‚РІ
