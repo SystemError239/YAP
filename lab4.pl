@@ -32,12 +32,12 @@ print_expeditions :-
 
 % Вывод списка команд
 print_results([]) :-
-    write('Нет возможных составов экспедиции.'), nl.
+    write('Больше нет возможных составов'), nl.
 print_results([H|T]) :-
     write('Возможный состав: '), write(H), nl,
     print_results(T).
 
-% Главный предикат, запускающий программу автоматически
+%главный предикат
 main :-
     print_expeditions,
     write('Нажмите Enter для выхода...'), nl,
