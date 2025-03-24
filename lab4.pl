@@ -1,6 +1,6 @@
 :- initialization(main).
 
-% Определяем возможные кандидаты для каждой роли
+% РћРїСЂРµРґРµР»СЏРµРј РІРѕР·РјРѕР¶РЅС‹Рµ РєР°РЅРґРёРґР°С‚С‹ РґР»СЏ РєР°Р¶РґРѕР№ СЂРѕР»Рё
 expedition(Bio, Hyd, Syn, Rad, Mech, Doc) :-
     member(Bio, [e, g]),
     member(Hyd, [b, f]),
@@ -9,36 +9,36 @@ expedition(Bio, Hyd, Syn, Rad, Mech, Doc) :-
     member(Mech, [c, h]),
     member(Doc, [a, d]),
 
-    % Проверка уникальности каждого участника
+    % РџСЂРѕРІРµСЂРєР° СѓРЅРёРєР°Р»СЊРЅРѕСЃС‚Рё РєР°Р¶РґРѕРіРѕ СѓС‡Р°СЃС‚РЅРёРєР°
     all_different([Bio, Hyd, Syn, Rad, Mech, Doc]),
 
-    % Условия
-    (Hyd = f -> member(b, [Bio, Syn, Rad, Mech, Doc]) ; true),  % F не может ехать без B
+    % РЈСЃР»РѕРІРёСЏ
+    (Hyd = f -> member(b, [Bio, Syn, Rad, Mech, Doc]) ; true),  % F РЅРµ РјРѕР¶РµС‚ РµС…Р°С‚СЊ Р±РµР· B
     (Doc = d -> member(c, [Bio, Hyd, Syn, Rad, Mech, Doc]),
-                 member(h, [Bio, Hyd, Syn, Rad, Mech, Doc]) ; true),  % D не может без C и H
-    \+ (Rad = c, member(g, [Bio, Hyd, Syn, Mech, Doc])),  % C и G не могут быть вместе
-    \+ (Doc = a, member(b, [Bio, Hyd, Syn, Rad, Mech, Doc])).  % A и B не могут быть вместе
+                 member(h, [Bio, Hyd, Syn, Rad, Mech, Doc]) ; true),  % D РЅРµ РјРѕР¶РµС‚ Р±РµР· C Рё H
+    \+ (Rad = c, member(g, [Bio, Hyd, Syn, Mech, Doc])),  % C Рё G РЅРµ РјРѕРіСѓС‚ Р±С‹С‚СЊ РІРјРµСЃС‚Рµ
+    \+ (Doc = a, member(b, [Bio, Hyd, Syn, Rad, Mech, Doc])).  % A Рё B РЅРµ РјРѕРіСѓС‚ Р±С‹С‚СЊ РІРјРµСЃС‚Рµ
 
-% Проверка, что все выбранные участники различны
+% РџСЂРѕРІРµСЂРєР°, С‡С‚Рѕ РІСЃРµ РІС‹Р±СЂР°РЅРЅС‹Рµ СѓС‡Р°СЃС‚РЅРёРєРё СЂР°Р·Р»РёС‡РЅС‹
 all_different([]).
 all_different([H|T]) :-
     \+ member(H, T),
     all_different(T).
 
-% Вывод всех возможных составов экспедиции
+% Р’С‹РІРѕРґ РІСЃРµС… РІРѕР·РјРѕР¶РЅС‹С… СЃРѕСЃС‚Р°РІРѕРІ СЌРєСЃРїРµРґРёС†РёРё
 print_expeditions :-
     findall([Bio, Hyd, Syn, Rad, Mech, Doc], expedition(Bio, Hyd, Syn, Rad, Mech, Doc), Teams),
     print_results(Teams).
 
-% Вывод списка команд
+% Р’С‹РІРѕРґ СЃРїРёСЃРєР° РєРѕРјР°РЅРґ
 print_results([]) :-
-    write('Нет возможных составов экспедиции.'), nl.
+    write('РќРµС‚ РІРѕР·РјРѕР¶РЅС‹С… СЃРѕСЃС‚Р°РІРѕРІ СЌРєСЃРїРµРґРёС†РёРё.'), nl.
 print_results([H|T]) :-
-    write('Возможный состав: '), write(H), nl,
+    write('Р’РѕР·РјРѕР¶РЅС‹Р№ СЃРѕСЃС‚Р°РІ: '), write(H), nl,
     print_results(T).
 
-% Главный предикат, запускающий программу автоматически
+% Р“Р»Р°РІРЅС‹Р№ РїСЂРµРґРёРєР°С‚, Р·Р°РїСѓСЃРєР°СЋС‰РёР№ РїСЂРѕРіСЂР°РјРјСѓ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё
 main :-
     print_expeditions,
-    write('Нажмите Enter для выхода...'), nl,
+    write('РќР°Р¶РјРёС‚Рµ Enter РґР»СЏ РІС‹С…РѕРґР°...'), nl,
     read_line_to_string(user_input, _).
