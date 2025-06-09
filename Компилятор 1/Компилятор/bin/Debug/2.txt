@@ -1,0 +1,8 @@
+procedure box (q: char; g, d: integer);
+var 
+  a,b: real; c: array [1..Sz] of integer; r: real;
+beg
+  r:= abs(a-b);
+  a:=b;
+  writeln(r);
+end.                     

@@ -1,0 +1,138 @@
+
+const
+  n = 2; nn = 4;
+type
+  ref = ^page;
+  item = record 
+    key: longint;
+    p: ref; // указатель на соответствующего сына
+    count: longint; // значение ключа
+  end;
+
+  page = record
+    m: 0..nn; 
+    p0: ref; 
+    e: array[1..nn] of item; // item -  массив записей 
+  end;
+
+
+VAR root,q:ref;
+    x:longint;
+    h:boolean;
+    u:item;
+procedure search(x: longint; a: ref; var h: boolean; var v: item);
+var
+  k, L, r: longint; q: ref; u: item;
+  i: longint; b: ref;
+begin
+  if a = nil then
+  begin 
+   with v do
+    begin
+      h := true; key := x; count := 999; p := nil
+    end
+  end 
+  else
+  begin
+    with a^ do
+    begin
+      L := 1; r := m;
+      repeat 
+        k := (L + r) div 2;
+        if x <= e[k].key then r := k - 1;
+        if x >= e[k].key then L := k + 1;
+      until r < L;
+      if (L - r) > 1 then
+      begin 
+        e[k].count := e[k].count + 1; h := false
+      end 
+      else
+      begin 
+        if r = 0 then q := p0 else q := e[r].p;
+        search(x, q, h, u); 
+  
+
+    if h then
+    begin
+    
+  with a^ do
+  begin
+    if m < nn then
+    begin 
+      m := m + 1; 
+      h := false; 
+      for i := m downto r + 2 do e[i] := e[i - 1];
+     
+      e[r + 1] := u
+    end else 
+    begin 
+      new(b); 
+      if r <= n then 
+      begin
+        if r = n then v := u else
+        begin
+          v := e[n];
+          for i := n downto r + 2 do e[i] := e[i - 1];
+          e[r + 1] := u
+        end;
+        for i := 1 to n do b^.e[i] := a^.e[i + n]
+      end else
+      begin  
+        r := r - n; v := e[n + 1];
+        for i := 1 to r - 1 do b^.e[i] := a^.e[i + n + 1];
+        b^.e[r] := u;
+        for i := r + 1 to n do b^.e[i] := a^.e[i + n]
+      end;
+      m := n; 
+      b^.m := n; 
+      b^.p0 := v.p;
+      v.p := b;
+    end
+  end
+    
+ end
+      end
+    end
+  end
+end; 
+procedure printtree(p: ref; L: longint);
+var
+  i: longint;
+begin
+
+  if p <> nil then
+    with p^ do
+    begin
+    write('m=',m);
+      for i:=1 to l do write(' ');
+      for i := 1 to m do write(e[i].key:4);
+      writeln;
+      printtree(p0, L + 1); 
+      for i := 1 to m do printtree(e[i].p, L + 1); 
+    end
+end;
+Begin
+  root:=nil;
+  write('Введите ключ: ');
+  read(x);
+  while x<>0 do 
+    begin
+    search(x,root,h,u);
+    if h then
+      begin 
+      q:=root;
+      new(root);
+      with root^ do
+        begin
+        m:=1;
+        p0:=q;
+        e[1]:=u
+        end
+      end;
+    writeln('Б-дерево:');
+    printtree(root,1);
+    write('Введите ключ: ');
+    read(x)
+    end;
+   
+end.

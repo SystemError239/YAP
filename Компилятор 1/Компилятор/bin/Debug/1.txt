@@ -1,0 +1,15 @@
+procedure box (s: char; w, h: int);
+procedure bo (q: char; g, d: integer);
+var 
+  a,b: real; c: array [1.Sz] of integer; r: real;
+begin
+  write(a);(*Comment_1
+  readln(a);
+  writeln(b);/Comment_2
+  readln(b);{Comment_3
+  bqq:=(s,w,h);
+  bo(1,3,3);
+  r:= abs(a-b);
+  a=b;
+  writeln(r);
+end      

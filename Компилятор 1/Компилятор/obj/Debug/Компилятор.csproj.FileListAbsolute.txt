@@ -1,0 +1,35 @@
+C:\Users\pc\Desktop\Компилятор\Компилятор\bin\Debug\Компилятор.exe.config
+C:\Users\pc\Desktop\Компилятор\Компилятор\bin\Debug\Компилятор.exe
+C:\Users\pc\Desktop\Компилятор\Компилятор\bin\Debug\Компилятор.pdb
+C:\Users\pc\Desktop\Компилятор\Компилятор\obj\Debug\Компилятор.csprojAssemblyReference.cache
+C:\Users\pc\Desktop\Компилятор\Компилятор\obj\Debug\Компилятор.csproj.CoreCompileInputs.cache
+C:\Users\pc\Desktop\Компилятор\Компилятор\obj\Debug\Компилятор.exe
+C:\Users\pc\Desktop\Компилятор\Компилятор\obj\Debug\Компилятор.pdb
+C:\Users\Vexicus\Desktop\Новая папка\Компилятор\Компилятор\bin\Debug\Компилятор.exe.config
+C:\Users\Vexicus\Desktop\Новая папка\Компилятор\Компилятор\bin\Debug\Компилятор.exe
+C:\Users\Vexicus\Desktop\Новая папка\Компилятор\Компилятор\bin\Debug\Компилятор.pdb
+C:\Users\Vexicus\Desktop\Новая папка\Компилятор\Компилятор\obj\Debug\Компилятор.csprojAssemblyReference.cache
+C:\Users\Vexicus\Desktop\Новая папка\Компилятор\Компилятор\obj\Debug\Компилятор.csproj.CoreCompileInputs.cache
+C:\Users\Vexicus\Desktop\Новая папка\Компилятор\Компилятор\obj\Debug\Компилятор.exe
+C:\Users\Vexicus\Desktop\Новая папка\Компилятор\Компилятор\obj\Debug\Компилятор.pdb
+C:\Users\Vexicus\Desktop\Компилятор\Компилятор\bin\Debug\Компилятор.exe.config
+C:\Users\Vexicus\Desktop\Компилятор\Компилятор\bin\Debug\Компилятор.exe
+C:\Users\Vexicus\Desktop\Компилятор\Компилятор\bin\Debug\Компилятор.pdb
+C:\Users\Vexicus\Desktop\Компилятор\Компилятор\obj\Debug\Компилятор.csprojAssemblyReference.cache
+C:\Users\Vexicus\Desktop\Компилятор\Компилятор\obj\Debug\Компилятор.csproj.CoreCompileInputs.cache
+C:\Users\Vexicus\Desktop\Компилятор\Компилятор\obj\Debug\Компилятор.exe
+C:\Users\Vexicus\Desktop\Компилятор\Компилятор\obj\Debug\Компилятор.pdb
+C:\Users\Vexicus\Desktop\ЯП 2 курс\Компилятор 1\Компилятор\bin\Debug\Компилятор.exe.config
+C:\Users\Vexicus\Desktop\ЯП 2 курс\Компилятор 1\Компилятор\bin\Debug\Компилятор.exe
+C:\Users\Vexicus\Desktop\ЯП 2 курс\Компилятор 1\Компилятор\bin\Debug\Компилятор.pdb
+C:\Users\Vexicus\Desktop\ЯП 2 курс\Компилятор 1\Компилятор\obj\Debug\Компилятор.csprojAssemblyReference.cache
+C:\Users\Vexicus\Desktop\ЯП 2 курс\Компилятор 1\Компилятор\obj\Debug\Компилятор.csproj.CoreCompileInputs.cache
+C:\Users\Vexicus\Desktop\ЯП 2 курс\Компилятор 1\Компилятор\obj\Debug\Компилятор.exe
+C:\Users\Vexicus\Desktop\ЯП 2 курс\Компилятор 1\Компилятор\obj\Debug\Компилятор.pdb
+C:\Users\Тамара\Desktop\Компилятор 1\Компилятор\bin\Debug\Компилятор.exe.config
+C:\Users\Тамара\Desktop\Компилятор 1\Компилятор\bin\Debug\Компилятор.exe
+C:\Users\Тамара\Desktop\Компилятор 1\Компилятор\bin\Debug\Компилятор.pdb
+C:\Users\Тамара\Desktop\Компилятор 1\Компилятор\obj\Debug\Компилятор.csproj.AssemblyReference.cache
+C:\Users\Тамара\Desktop\Компилятор 1\Компилятор\obj\Debug\Компилятор.csproj.CoreCompileInputs.cache
+C:\Users\Тамара\Desktop\Компилятор 1\Компилятор\obj\Debug\Компилятор.exe
+C:\Users\Тамара\Desktop\Компилятор 1\Компилятор\obj\Debug\Компилятор.pdb
